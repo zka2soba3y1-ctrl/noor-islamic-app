@@ -1,0 +1,12 @@
+{
+  "name": "Noor Global Islamic Project",
+  "description": "تطبيق النور الإسلامي الشامل - نوراً للمسلم المبصر والكفيف. تطبيق PWA احترافي، مصحف المدينة 604 صفحة، أذكار، محاضرات، وشاشات ترحيب إسلامية تفاعلية وقاعدة بيانات SQLite محلية.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

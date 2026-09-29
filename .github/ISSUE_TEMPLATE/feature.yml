@@ -1,0 +1,66 @@
+name: ✨ اقتراح ميزة (Feature Request)
+description: اقترح ميزة جديدة أو تحسينًا
+title: "✨ [FEATURE] <وصف موجز>"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        <div dir="rtl">
+        شكرًا لك! هذا المشروع **وقف لوجه الله** — نرحب بكل ميزة تنفع المسلمين.
+        </div>
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 🎯 نوع الاقتراح
+      options:
+        - ✨ ميزة جديدة
+        - 🎨 تحسين تصميم
+        - ⚡ تحسين أداء
+        - 🌍 ترجمة / دعم لغة
+        - ♿ تحسين إمكانية الوصول (للمكفوفين)
+        - 🔒 تحسين أمني
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: ❓ ما المشكلة التي تحلها هذه الميزة؟
+      placeholder: "مثال: المكفوفون لا يستطيعون معرفة الوقت المتبقي للأذان بالضبط."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 الحل المقترح
+      placeholder: "مثال: إعلان صوتي يذكر الوقت المتبقي قبل الأذان بدقائق."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 حلول بديلة فكرت فيها
+
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: ⚖️ تأكيد التزامك بقيم المشروع
+      options:
+        - label: ميزتي **بدون إعلانات** وبدون أي تكلفة مالية على المستخدم
+          required: true
+        - label: ميزتي **لا تجمع بيانات شخصية** ولا ترسلها لأي طرف ثالث
+          required: true
+        - label: ميزتي تعمل (أو لها بديل) في **الوضع الحسي للمكفوفين**
+          required: true
+        - label: المحتوى الديني في ميزتي **من مصدر موثوق**
+          required: true
+
+  - type: textarea
+    id: mockup
+    attributes:
+      label: 🎨 رسم تقريبي (Mockup)
+      description: إن أمكن

@@ -1,0 +1,88 @@
+name: 🐛 الإبلاغ عن خطأ (Bug Report)
+description: أبلغ عن خطأ يمنع التطبيق من العمل بشكل صحيح
+title: "🐛 [BUG] <وصف موجز>"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        <div dir="rtl">
+        شكرًا لاهتمامك! هذا المشروع **وقف لوجه الله**، وكل بلاغك صدقة لك.
+        املأ الحقول التالية بالتفصيل لنتمكن من المساعدة.
+        </div>
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 وصف الخطأ
+      description: ما الذي حدث بالضبط؟ وما الذي كنت تتوقع أن يحدث؟
+      placeholder: "مثال: عند فتح المصحف، تظهر شاشة بيضاء بدلًا من الصفحات."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🪜 خطوات إعادة الإنتاج
+      description: خطوة بخطوة
+      placeholder: |
+        1. فتحت التطبيق
+        2. ضغطت على تبويب "المصحف"
+        3. ظهرت شاشة بيضاء
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: 🧭 وضع التطبيق
+      description: في أي وضع حدث الخطأ؟
+      options:
+        - 👁️ الوضع المرئي (للمبصرين)
+        - 📳 الوضع الحسي (للمكفوفين)
+        - 🗺️ وضع المخطط (Blueprint)
+        - 🤔 غير متأكد
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 🚨 درجة الخطورة
+      options:
+        - 🔴 حرج — التطبيق لا يعمل إطلاقًا
+        - 🟠 كبير — ميزة رئيسية متعطلة
+        - 🟡 متوسط — ميزة فرعية متعطلة
+        - 🟢 صغير — إزعاج بسيط
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 🔗 رابط الصفحة
+      placeholder: "https://noor.zka2soba3y.com/"
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 💻 بيئة التشغيل
+      placeholder: |
+        - المتصفح: Chrome 130
+        - نظام التشغيل: Android 14
+        - نوع الجهاز: موبايل
+        - هل تستخدم قارئ شاشة؟ (TalkBack / VoiceOver): نعم
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 رسائل الخطأ (Console / Logs)
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 لقطات شاشة / تسجيل
+      description: إن أمكن (تسجيل فيديو يساعد كثيرًا، خصوصًا لقارئات الشاشة)

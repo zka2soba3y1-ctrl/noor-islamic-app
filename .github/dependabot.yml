@@ -1,0 +1,35 @@
+# DEPENDABOT — التحديثات التلقائية للأمان والتبعيات
+# https://docs.github.com/en/code-security/dependabot
+
+version: 2
+updates:
+  # تحديثات حزم npm
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+    open-pull-requests-limit: 5
+    groups:
+      # دمج التحديثات الطفيفة في PR واحد
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore
+      include: scope
+    labels:
+      - dependencies
+
+  # تحديثات GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+    commit-message:
+      prefix: chore
+      include: scope
+    labels:
+      - dependencies

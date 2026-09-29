@@ -1,0 +1,59 @@
+name: CI — فحص الجودة
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: 🔍 Type-check & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Type-check (tsc --noEmit)
+        run: npm run lint
+
+      - name: 🏗️ Build production bundle
+        run: npm run build
+        env:
+          # CI build does not need real keys — the server must start
+          # and serve without them (graceful degradation).
+          GEMINI_API_KEY: ""
+          CUSTOM_AI_BASE_URL: ""
+          CUSTOM_AI_API_KEY: ""
+          CUSTOM_AI_MODEL: ""
+
+  security:
+    name: 🔒 Secret leak scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Scan for leaked API keys
+        run: |
+          set -e
+          echo "Scanning for hardcoded secrets..."
+          if git grep -nE "AIzaSy[0-9A-Za-z_-]{35}|sk-[A-Za-z0-9]{20,}" -- ':!.env.example'; then
+            echo "::error::Hardcoded API key detected in source. Remove it and use environment variables instead (see SECURITY.md)."
+            exit 1
+          fi
+          echo "No hardcoded secrets found. ✓"
+
+      - name: 🛡️ npm audit (high+ only)
+        run: npm audit --audit-level=high || true

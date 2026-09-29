@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 ثغرة أمنية
+    url: https://github.com/ahmed-genius/noor-islamic-app/blob/main/SECURITY.md
+    about: لا تفتح Issue عامًا للثغرات! اقرأ SECURITY.md وابلغ عبر واتساب 01130680225 أو البريد ceo@gbc4.com
+  - name: 📱 الدعم المباشر (واتساب)
+    url: https://wa.me/201130680225
+    about: تواصل مباشرة مع المطور (أحمد بن علي الجينيس)
+  - name: 🌐 الموقع الرسمي
+    url: https://www.gbc4.com
+    about: نادي الجينيس — Genius Business Club

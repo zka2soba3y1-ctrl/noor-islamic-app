@@ -1,0 +1,254 @@
+import fs from "fs";
+import path from "path";
+import sharp from "sharp";
+
+const publicDir = path.join(process.cwd(), "public");
+if (!fs.existsSync(publicDir)) {
+  fs.mkdirSync(publicDir, { recursive: true });
+}
+
+// 1. Square Icon SVG (matching 1.png: gold frame, emerald domes, crescent & star, calligraphy, arabesque)
+const squareIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3E7C4"/>
+      <stop offset="30%" stop-color="#D4AF37"/>
+      <stop offset="70%" stop-color="#AA7C11"/>
+      <stop offset="100%" stop-color="#E5C158"/>
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#064E3B"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#059669" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="48" fill="#061A14"/>
+  <rect x="16" y="16" width="480" height="480" rx="36" fill="#0A241C" stroke="url(#goldGrad)" stroke-width="3"/>
+  <rect x="24" y="24" width="464" height="464" rx="28" fill="none" stroke="url(#goldGrad)" stroke-width="1" stroke-opacity="0.4"/>
+  <circle cx="256" cy="220" r="190" fill="url(#glowGrad)"/>
+
+  <!-- Top Octagram Star & Crescent Badge -->
+  <g transform="translate(256, 75) scale(0.65)">
+    <!-- 8-pointed star base -->
+    <path d="M0 -30 L8 -8 L30 0 L8 8 L0 30 L-8 8 L-30 0 L-8 -8 Z" fill="url(#emeraldGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+    <path d="M-21 -21 L0 -12 L21 -21 L12 0 L21 21 L0 12 L-21 21 L-12 0 Z" fill="url(#emeraldGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+    <!-- Crescent & Star inside badge -->
+    <path d="M-4 -12 A 14 14 0 1 0 12 8 A 12 12 0 1 1 -4 -12 Z" fill="url(#goldGrad)"/>
+    <polygon points="5,-4 7,-1 10,-2 8,1 9,4 6,2 4,4 5,1 3,-1 6,-1" fill="url(#goldGrad)"/>
+  </g>
+
+  <!-- Islamic Mosque Domes & Minarets -->
+  <g transform="translate(256, 175) scale(0.95)">
+    <!-- Side minarets left -->
+    <path d="M-195 20 L-185 20 L-185 -55 L-190 -70 L-195 -55 Z" fill="url(#goldGrad)"/>
+    <path d="M-190 -70 L-190 -85" stroke="url(#goldGrad)" stroke-width="2"/>
+    <circle cx="-190" cy="-88" r="3" fill="url(#goldGrad)"/>
+    <path d="M-155 20 L-145 20 L-145 -70 L-150 -90 L-155 -70 Z" fill="url(#goldGrad)"/>
+    <!-- Side minarets right -->
+    <path d="M145 20 L155 20 L155 -70 L150 -90 L145 -70 Z" fill="url(#goldGrad)"/>
+    <path d="M185 20 L195 20 L195 -55 L190 -70 L185 -55 Z" fill="url(#goldGrad)"/>
+    <path d="M190 -70 L190 -85" stroke="url(#goldGrad)" stroke-width="2"/>
+    <circle cx="190" cy="-88" r="3" fill="url(#goldGrad)"/>
+
+    <!-- Green side domes -->
+    <path d="M-175 20 C-175 -25 -135 -25 -135 20 Z" fill="url(#emeraldGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+    <path d="M135 20 C135 -25 175 -25 175 20 Z" fill="url(#emeraldGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+    <path d="M-130 20 C-130 -40 -85 -40 -85 20 Z" fill="url(#emeraldGrad)" stroke="url(#goldGrad)" stroke-width="2.5"/>
+    <path d="M85 20 C85 -40 130 -40 130 20 Z" fill="url(#emeraldGrad)" stroke="url(#goldGrad)" stroke-width="2.5"/>
+
+    <!-- Main central grand arch and golden dome -->
+    <path d="M-80 20 C-80 -80 0 -105 0 -115 C0 -105 80 -80 80 20 Z" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
+    <path d="M-70 20 C-70 -70 0 -95 0 -95 C0 -95 70 -70 70 20 Z" fill="#062319" stroke="url(#goldGrad)" stroke-width="1.5"/>
+
+    <!-- Crescent and 8-pointed star in central arch -->
+    <g transform="translate(0, -35) scale(1.1)">
+      <path d="M-12 -22 A 26 26 0 1 0 18 16 A 21 21 0 1 1 -12 -22 Z" fill="url(#goldGrad)"/>
+      <polygon points="12,-5 16,2 24,0 19,6 22,14 15,10 10,15 11,8 5,4 12,3" fill="url(#goldGrad)"/>
+    </g>
+
+    <!-- Arabesque filigree curves -->
+    <path d="M-115 -10 Q-60 -60 0 -60 Q60 -60 115 -10" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-dasharray="3,3"/>
+  </g>
+
+  <!-- Arabic Calligraphy: تطبيق النور الإسلامي -->
+  <g id="calligraphy-group" transform="translate(256, 320)">
+    <!-- Decorative Diacritics (Harakat) in emerald green -->
+    <path d="M-130 -55 L-115 -62" stroke="#10B981" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M-50 -60 L-35 -67" stroke="#10B981" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M50 -62 L65 -68" stroke="#10B981" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M120 -55 L135 -62" stroke="#10B981" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="-90" cy="-60" r="3" fill="#10B981"/>
+    <circle cx="95" cy="-58" r="3" fill="#10B981"/>
+
+    <!-- Main Title: تطبيق النور الإسلامي -->
+    <text x="0" y="-12" text-anchor="middle" font-family="'Alexandria', 'Cairo', 'Amiri', 'Traditional Arabic', sans-serif" font-size="44" font-weight="900" fill="url(#goldGrad)" letter-spacing="1" filter="url(#goldGlow)">تطبيق النور الإسلامي</text>
+  </g>
+
+  <!-- Ornate Golden Separator Line -->
+  <g transform="translate(256, 360)">
+    <line x1="-160" y1="0" x2="-25" y2="0" stroke="url(#goldGrad)" stroke-width="2"/>
+    <line x1="25" y1="0" x2="160" y2="0" stroke="url(#goldGrad)" stroke-width="2"/>
+    <circle cx="-12" cy="0" r="3.5" fill="url(#goldGrad)"/>
+    <polygon points="0,-7 6,0 0,7 -6,0" fill="url(#goldGrad)"/>
+    <circle cx="12" cy="0" r="3.5" fill="url(#goldGrad)"/>
+  </g>
+
+  <!-- Subtitle: نوراً للمسلم المبصر - والكفيف -->
+  <text x="256" y="405" text-anchor="middle" font-family="'Alexandria', 'Cairo', 'Amiri', sans-serif" font-size="22" font-weight="700" fill="#E8D196" letter-spacing="0.5">نوراً للمسلم المبصر – والكفيف</text>
+
+  <!-- Bottom Islamic Arabesque Ornament -->
+  <g transform="translate(256, 455) scale(0.75)">
+    <path d="M0 -15 C20 -5 45 -5 65 -20 C50 0 35 15 0 22 C-35 15 -50 0 -65 -20 C-45 -5 -20 -5 0 -15 Z" fill="url(#emeraldGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+    <circle cx="0" cy="5" r="4" fill="url(#goldGrad)"/>
+    <path d="M-80 -8 C-50 15 -20 18 0 5 C20 18 50 15 80 -8" fill="none" stroke="url(#goldGrad)" stroke-width="2"/>
+    <circle cx="-82" cy="-8" r="3" fill="url(#goldGrad)"/>
+    <circle cx="82" cy="-8" r="3" fill="url(#goldGrad)"/>
+  </g>
+</svg>`;
+
+// 2. Wide Banner Logo SVG (matching 3.png)
+const wideBannerSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" width="1000" height="480">
+  <defs>
+    <linearGradient id="goldGradW" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF3CE"/>
+      <stop offset="35%" stop-color="#D4AF37"/>
+      <stop offset="70%" stop-color="#AA7C11"/>
+      <stop offset="100%" stop-color="#E5C158"/>
+    </linearGradient>
+    <linearGradient id="emeraldGradW" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#064E3B"/>
+    </linearGradient>
+    <filter id="goldGlowW" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Top Ornate Crescent Arch & Star Compass -->
+  <g transform="translate(500, 100)">
+    <!-- Top Central Crescent & Octagram -->
+    <g transform="translate(0, -45) scale(0.6)">
+      <polygon points="0,-25 8,-8 25,0 8,8 0,25 -8,8 -25,0 -8,-8" fill="url(#emeraldGradW)" stroke="url(#goldGradW)" stroke-width="2"/>
+      <polygon points="-18,-18 0,-10 18,-18 10,0 18,18 0,10 -18,18 -10,0" fill="url(#emeraldGradW)" stroke="url(#goldGradW)" stroke-width="2"/>
+      <path d="M-3 -10 A 12 12 0 1 0 10 7 A 10 10 0 1 1 -3 -10 Z" fill="url(#goldGradW)"/>
+    </g>
+
+    <!-- Arch domes with Quranic calligraphy motif -->
+    <path d="M-180 35 C-150 -50 0 -70 0 -70 C0 -70 150 -50 180 35" fill="none" stroke="url(#goldGradW)" stroke-width="4.5"/>
+    <path d="M-150 35 C-120 -35 0 -50 0 -50 C0 -50 120 -35 150 35" fill="none" stroke="url(#goldGradW)" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+    <!-- Central 8-Point Compass Star -->
+    <g transform="translate(0, 5) scale(1)">
+      <path d="M0 -32 L5 -7 L32 0 L5 7 L0 32 L-5 7 L-32 0 L-5 -7 Z" fill="url(#goldGradW)" filter="url(#goldGlowW)"/>
+      <path d="M-18 -18 L0 -6 L18 -18 L6 0 L18 18 L0 6 L-18 18 L-6 0 Z" fill="url(#goldGradW)"/>
+      <circle cx="0" cy="0" r="4" fill="#042F24" stroke="url(#goldGradW)" stroke-width="1.5"/>
+    </g>
+  </g>
+
+  <!-- Flanking Minarets -->
+  <!-- Left Minaret -->
+  <g transform="translate(120, 240) scale(0.85)">
+    <rect x="-8" y="-70" width="16" height="120" fill="url(#goldGradW)" rx="2"/>
+    <rect x="-12" y="-20" width="24" height="8" fill="url(#goldGradW)" rx="2"/>
+    <rect x="-12" y="-55" width="24" height="8" fill="url(#goldGradW)" rx="2"/>
+    <path d="M-10 -70 L0 -95 L10 -70 Z" fill="url(#goldGradW)"/>
+    <line x1="0" y1="-95" x2="0" y2="-110" stroke="url(#goldGradW)" stroke-width="2"/>
+    <circle cx="0" cy="-113" r="3" fill="url(#goldGradW)"/>
+  </g>
+
+  <!-- Right Minaret -->
+  <g transform="translate(880, 240) scale(0.85)">
+    <rect x="-8" y="-70" width="16" height="120" fill="url(#goldGradW)" rx="2"/>
+    <rect x="-12" y="-20" width="24" height="8" fill="url(#goldGradW)" rx="2"/>
+    <rect x="-12" y="-55" width="24" height="8" fill="url(#goldGradW)" rx="2"/>
+    <path d="M-10 -70 L0 -95 L10 -70 Z" fill="url(#goldGradW)"/>
+    <line x1="0" y1="-95" x2="0" y2="-110" stroke="url(#goldGradW)" stroke-width="2"/>
+    <circle cx="0" cy="-113" r="3" fill="url(#goldGradW)"/>
+  </g>
+
+  <!-- Main Brand Title Calligraphy: تطبيق النور الإسلامي -->
+  <g transform="translate(500, 260)">
+    <!-- Harakat in emerald green -->
+    <path d="M-220 -60 L-200 -70" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-90 -70 L-70 -80" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+    <path d="M70 -75 L90 -85" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+    <path d="M200 -65 L220 -75" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="-150" cy="-70" r="4" fill="#10B981"/>
+    <circle cx="150" cy="-70" r="4" fill="#10B981"/>
+
+    <text x="0" y="0" text-anchor="middle" font-family="'Alexandria', 'Cairo', 'Amiri', 'Traditional Arabic', sans-serif" font-size="78" font-weight="900" fill="url(#goldGradW)" letter-spacing="2" filter="url(#goldGlowW)">تطبيق النور الإسلامي</text>
+  </g>
+
+  <!-- Ornate Separator Line -->
+  <g transform="translate(500, 310)">
+    <line x1="-320" y1="0" x2="-45" y2="0" stroke="url(#goldGradW)" stroke-width="2.5"/>
+    <line x1="45" y1="0" x2="320" y2="0" stroke="url(#goldGradW)" stroke-width="2.5"/>
+    <circle cx="-20" cy="0" r="4" fill="url(#goldGradW)"/>
+    <polygon points="0,-9 9,0 0,9 -9,0" fill="url(#goldGradW)"/>
+    <circle cx="20" cy="0" r="4" fill="url(#goldGradW)"/>
+  </g>
+
+  <!-- Subtitle: نوراً للمسلم المبصر – والكفيف -->
+  <text x="500" y="380" text-anchor="middle" font-family="'Alexandria', 'Cairo', 'Amiri', sans-serif" font-size="40" font-weight="800" fill="url(#goldGradW)" letter-spacing="1">نوراً للمسلم المبصر – والكفيف</text>
+</svg>`;
+
+async function buildAssets() {
+  console.log("Generating SVG assets...");
+  fs.writeFileSync(path.join(publicDir, "icon.svg"), squareIconSvg);
+  fs.writeFileSync(path.join(publicDir, "logo-wide.svg"), wideBannerSvg);
+
+  const squareBuffer = Buffer.from(squareIconSvg);
+
+  console.log("Rendering PWA 192x192 PNG...");
+  await sharp(squareBuffer)
+    .resize(192, 192)
+    .png()
+    .toFile(path.join(publicDir, "pwa-192x192.png"));
+
+  console.log("Rendering PWA 512x512 PNG...");
+  await sharp(squareBuffer)
+    .resize(512, 512)
+    .png()
+    .toFile(path.join(publicDir, "pwa-512x512.png"));
+
+  console.log("Rendering PWA Maskable 512x512 PNG...");
+  // Maskable icon requires 10-15% safe padding
+  const paddedSvg = squareIconSvg.replace('viewBox="0 0 512 512"', 'viewBox="-40 -40 592 592"');
+  await sharp(Buffer.from(paddedSvg))
+    .resize(512, 512)
+    .png()
+    .toFile(path.join(publicDir, "pwa-maskable-512x512.png"));
+
+  console.log("Rendering Apple Touch Icon (180x180)...");
+  await sharp(squareBuffer)
+    .resize(180, 180)
+    .png()
+    .toFile(path.join(publicDir, "apple-touch-icon.png"));
+
+  console.log("Rendering Wide Logo PNG (1000x480)...");
+  await sharp(Buffer.from(wideBannerSvg))
+    .resize(1000, 480)
+    .png()
+    .toFile(path.join(publicDir, "logo-wide.png"));
+
+  console.log("Rendering Favicon (32x32)...");
+  await sharp(squareBuffer)
+    .resize(32, 32)
+    .png()
+    .toFile(path.join(publicDir, "favicon.png"));
+
+  console.log("All PWA and Branding Assets successfully generated!");
+}
+
+buildAssets().catch(console.error);
